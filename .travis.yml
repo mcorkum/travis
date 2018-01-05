@@ -13,14 +13,11 @@ env:
 matrix:
   include:
   - php: 7.1
-    env: WP_TRAVISCI=travis:js
   - php: 7.2
   - php: 7.1
   - php: 7.0
   - php: 5.6
   - php: 5.6
-    env: WP_TRAVIS_OBJECT_CACHE=true
-    services: memcached
   - php: 5.5
   - php: 5.4
   - php: 5.3
@@ -34,11 +31,6 @@ before_install:
 - |
   if [[ "$WP_TRAVISCI" == "travis:phpunit" ]]; then
       mysql -u root -e "CREATE DATABASE wordpress;"
-  fi
-- |
-  if [[ "$WP_TRAVIS_OBJECT_CACHE" == "true" ]]; then
-    cp tests/phpunit/includes/object-cache.php src/wp-content/object-cache.php
-    echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   fi
 before_script:
 - |
@@ -89,7 +81,7 @@ before_script:
 - curl --version
 - git --version
 - locale -a
-#script: grunt $WP_TRAVISCI
+script: echo hello
 #notifications:
 #  slack:
 #    rooms:
