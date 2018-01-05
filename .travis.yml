@@ -78,10 +78,6 @@ before_script:
   fi
 - npm --version
 - node --version
-- nvm install 6.9.1
-- npm install -g grunt-cli
-- npm install
-- npm prune
 - mysql --version
 - phpenv versions
 - php --version
@@ -91,9 +87,7 @@ before_script:
 - which phpunit
 - phpunit --version
 - curl --version
-- grunt --version
 - git --version
-- svn --version
 - locale -a
 #script: grunt $WP_TRAVISCI
 #notifications:
