@@ -49,11 +49,9 @@ matrix:
   - php: nightly
   allow_failures:
   - php: nightly
+
+
 before_install:
-- |
-  if [[ "$WP_TRAVISCI" == "travis:phpunit" ]]; then
-      mysql -u root -e "CREATE DATABASE wordpress;"
-  fi
 # create the databases that will be used in the tests
 - mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
 # set up folders
@@ -67,7 +65,29 @@ before_install:
 # prepend the `vendor/bin` folder the PATH
 - export PATH=vendor/bin:$PATH
 
+
+install:
+  # install WordPress in the `wordpress` folder
+  - cd $WP_FOLDER
+  - wp core download --version=$WP_VERSION
+  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
+  - wp core install --url="$WP_URL" --base="/" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
+  - wp rewrite structure '/%postname%/' --hard
+  # update WordPress database to avoid prompts
+  - wp core update-db
+  # get back to the build folder
+  - cd $TRAVIS_BUILD_DIR
+  # copy the Nginx configuration file to the available sites
+  - sudo cp build/travis-nginx-conf /etc/nginx/sites-available/$WP_DOMAIN
+  - sudo sed -e "s?%WP_FOLDER%?$WP_FOLDER?g" --in-place /etc/nginx/sites-available/$WP_DOMAIN
+  - sudo sed -e "s?%WP_DOMAIN%?$WP_DOMAIN?g" --in-place /etc/nginx/sites-available/$WP_DOMAIN
+  # enable the site
+  - sudo ln -s /etc/nginx/sites-available/$WP_DOMAIN /etc/nginx/sites-enabled/
+
+
 before_script:
+- sudo service php5-fpm restart
+- sudo service nginx restart
 - |
   # Remove Xdebug for a huge performance increase:
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
