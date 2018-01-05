@@ -10,6 +10,28 @@ cache:
 env:
   global:
     - WP_TRAVISCI=travis:phpunit
+    - WP_FOLDER="/tmp/wordpress"
+    - WP_URL="calderadev.ngrok.io"
+    - WP_DOMAIN="calderadev.ngrok.io"
+    - DB_NAME="wordpress"
+    - WP_TABLE_PREFIX="wp_"
+    - WP_ADMIN_USERNAME="admin"
+    - WP_ADMIN_PASSWORD="admin"
+  matrix:
+    - WP_VERSION=latest
+    - WP_VERSION=nightly
+
+addons:
+  apt:
+    packages:
+      - libjpeg-dev
+      - libpng12-dev
+      - php5-fpm
+      - php5-mysql
+      - nginx
+  hosts:
+    - calderadev.ngrok.io
+
 matrix:
   include:
   - php: 7.1
@@ -32,6 +54,19 @@ before_install:
   if [[ "$WP_TRAVISCI" == "travis:phpunit" ]]; then
       mysql -u root -e "CREATE DATABASE wordpress;"
   fi
+# create the databases that will be used in the tests
+- mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
+# set up folders
+- mkdir -p $WP_FOLDER
+- mkdir tools
+# install wp-cli in the `tools` folder
+- wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P $(pwd)/tools/
+- chmod +x tools/wp-cli.phar && mv tools/wp-cli.phar tools/wp
+# append the `tools` folder to the PATH
+- export PATH=$PATH:$(pwd)/tools
+# prepend the `vendor/bin` folder the PATH
+- export PATH=vendor/bin:$PATH
+
 before_script:
 - |
   # Remove Xdebug for a huge performance increase:
