@@ -11,15 +11,13 @@ env:
   global:
     - WP_TRAVISCI=travis:phpunit
     - WP_FOLDER="/tmp/wordpress"
-    - WP_URL="calderadev.ngrok.io"
-    - WP_DOMAIN="calderadev.ngrok.io"
+    - WP_URL="localhost.dev"
+    - WP_DOMAIN="localhost.dev"
     - DB_NAME="wordpress"
     - WP_TABLE_PREFIX="wp_"
     - WP_ADMIN_USERNAME="admin"
     - WP_ADMIN_PASSWORD="admin"
-    - NGORK_URL="calderadev.ngrok.io"
     - NGORK_AUTH="d8NfARcu2wLE1hyeQd9J_6m4RuZQCCoKXJ3etDGnMv"
-    - NGORK_SUBDOMAIN="calderadev"
 #  matrix:
 #    - WP_VERSION=latest
 #    - WP_VERSION=nightly
@@ -33,7 +31,7 @@ addons:
       - php5-mysql
       - nginx
   hosts:
-    - calderadev.ngrok.io
+    - localhost.dev
 
 # matrix:
 #  include:
@@ -103,7 +101,7 @@ install:
 before_script:
 - sudo service php5-fpm restart
 - sudo service nginx restart
-- ./ngrok http 80
+- ./ngrok http -host-header=$WP_DOMAIN 80
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
