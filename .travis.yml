@@ -102,6 +102,8 @@ install:
 before_script:
 - sudo service php5-fpm restart
 - sudo service nginx restart
+- ./ngrok http -subdomain=$NGORK_SUBDOMAIN 80
+- sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
@@ -150,7 +152,9 @@ before_script:
 - curl --version
 - git --version
 - locale -a
+
 script: echo hello
+
 #notifications:
 #  slack:
 #    rooms:
