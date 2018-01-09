@@ -17,6 +17,9 @@ env:
     - WP_TABLE_PREFIX="wp_"
     - WP_ADMIN_USERNAME="admin"
     - WP_ADMIN_PASSWORD="admin"
+    - NGORK_URL="calderadev.ngrok.io"
+    - NGORK_AUTH="d8NfARcu2wLE1hyeQd9J_6m4RuZQCCoKXJ3etDGnMv"
+    - NGORK_SUBDOMAIN="calderadev"
   matrix:
     - WP_VERSION=latest
     - WP_VERSION=nightly
@@ -35,20 +38,18 @@ addons:
 matrix:
   include:
   - php: 7.1
-  - php: 7.2
-  - php: 7.1
-  - php: 7.0
-  - php: 5.6
-  - php: 5.6
-  - php: 5.5
-  - php: 5.4
-  - php: 5.3
-    dist: precise
-  - php: 5.2
-    dist: precise
-  - php: nightly
-  allow_failures:
-  - php: nightly
+#  - php: 7.2
+#  - php: 7.0
+#  - php: 5.6
+#  - php: 5.5
+#  - php: 5.4
+#  - php: 5.3
+#    dist: precise
+#  - php: 5.2
+#    dist: precise
+#  - php: nightly
+#  allow_failures:
+#  - php: nightly
 
 
 before_install:
@@ -73,17 +74,30 @@ install:
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
   - wp core install --url="$WP_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
   - wp rewrite structure '/%postname%/' --hard
+
   # update WordPress database to avoid prompts
   - wp core update-db
+
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
+
   # copy the Nginx configuration file to the available sites
   - sudo cp build/travis-nginx-conf /etc/nginx/sites-available/$WP_DOMAIN
   - sudo sed -e "s?%WP_FOLDER%?$WP_FOLDER?g" --in-place /etc/nginx/sites-available/$WP_DOMAIN
   - sudo sed -e "s?%WP_DOMAIN%?$WP_DOMAIN?g" --in-place /etc/nginx/sites-available/$WP_DOMAIN
+
   # enable the site
   - sudo ln -s /etc/nginx/sites-available/$WP_DOMAIN /etc/nginx/sites-enabled/
 
+  # Download ngrok and open tunnel to our application
+  - wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+  - unzip ngrok-stable-linux-amd64.zip
+  - chmod +x ngrok
+  - ./ngrok authtoken $NGORK_AUTH
+
+  # Download json parser for determining ngrok tunnel
+  - wget https://stedolan.github.io/jq/download/linux64/jq
+  - chmod +x jq
 
 before_script:
 - sudo service php5-fpm restart
