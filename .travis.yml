@@ -103,7 +103,8 @@ install:
 before_script:
 - sudo service php5-fpm restart
 - sudo service nginx restart
-- ./ngrok http 80
+- ./ngrok http 80 > /dev/null &
+- echo $(curl -s localhost:4040/inspect/http | grep -oP 'window.common[^;]+' | sed 's/^[^\(]*("//' | sed 's/")\s*$//' | sed 's/\\"/"/g') | jq -r ".Session.Tunnels | values | map(.URL) | .[]" | grep "^http:"
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
