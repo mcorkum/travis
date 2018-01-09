@@ -105,6 +105,7 @@ before_script:
 - sudo service nginx restart
 - ./ngrok http 80 > /dev/null &
 - NGROK_URL=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
+- sleep 2
 - echo $NGROK_URL
 - sleep 500
 - |
