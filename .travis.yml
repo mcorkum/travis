@@ -105,6 +105,7 @@ before_script:
 - sudo service nginx restart
 - ./ngrok http 80 > /dev/null &
 - curl -s 'http://localhost:4040/api/tunnels' | $PWD/jq -r '.tunnels[1].public_url')
+- curl -s localhost:4040/inspect/http | grep -oP 'window.common[^;]+' | sed 's/^[^\(]*("//' | sed 's/")\s*$//' | sed 's/\\"/"/g') | $PWD/jq -r ".Session.Tunnels | values | map(.URL) | .[]" | grep "^http:"
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
