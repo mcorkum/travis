@@ -104,7 +104,8 @@ before_script:
 - sudo service php5-fpm restart
 - sudo service nginx restart
 - ./ngrok http 80 > /dev/null &
-- echo $(curl 'http://localhost:4040/api/tunnels' | $PWD/jq -r '.tunnels[1].public_url')
+- NGORKURL=$(curl 'http://localhost:4040/api/tunnels' | $PWD/jq -r '.tunnels[1].public_url')
+- echo "NGROK - $NGORKURL"
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
