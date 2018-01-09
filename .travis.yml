@@ -71,7 +71,9 @@ install:
 #  - wp core download --version=$WP_VERSION
   - wp core download
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
-  - wp core install --url="'http://' . $_SERVER['HTTP_HOST']" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
+  - wp core install --url="$WP_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
+  - wp option update home '/'
+  - wp option update siteurl '/'
   - wp rewrite structure '/%postname%/' --hard
 
   # update WordPress database to avoid prompts
@@ -101,7 +103,7 @@ install:
 before_script:
 - sudo service php5-fpm restart
 - sudo service nginx restart
-- ./ngrok http -host-header=$WP_DOMAIN 80
+- ./ngrok http 80
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
