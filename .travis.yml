@@ -12,7 +12,7 @@ env:
     - WP_TRAVISCI=travis:phpunit
     - WP_FOLDER="/tmp/wordpress"
     - WP_URL="localhost.dev"
-    - WP_DOMAIN="localhost.dev"
+    - WP_DOMAIN="localhost"
     - DB_NAME="wordpress"
     - WP_TABLE_PREFIX="wp_"
     - WP_ADMIN_USERNAME="admin"
@@ -31,7 +31,7 @@ addons:
       - php5-mysql
       - nginx
   hosts:
-    - localhost.dev
+    - localhost
 
 # matrix:
 #  include:
@@ -71,7 +71,7 @@ install:
 #  - wp core download --version=$WP_VERSION
   - wp core download
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
-  - wp core install --url="$WP_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
+  - wp core install --url="/" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
   - wp rewrite structure '/%postname%/' --hard
 
   # update WordPress database to avoid prompts
