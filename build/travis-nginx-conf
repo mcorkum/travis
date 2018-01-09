@@ -5,9 +5,7 @@ map $http_host $blogid {
 }
 
 server {
-    listen 80;
-
-    server_name %WP_DOMAIN% *.%WP_DOMAIN%;
+    listen 8080 default_server;
 
     root %WP_FOLDER%;
     index index.php;
