@@ -20,9 +20,9 @@ env:
     - NGORK_URL="calderadev.ngrok.io"
     - NGORK_AUTH="d8NfARcu2wLE1hyeQd9J_6m4RuZQCCoKXJ3etDGnMv"
     - NGORK_SUBDOMAIN="calderadev"
-  matrix:
-    - WP_VERSION=latest
-    - WP_VERSION=nightly
+#  matrix:
+#    - WP_VERSION=latest
+#    - WP_VERSION=nightly
 
 addons:
   apt:
@@ -35,9 +35,9 @@ addons:
   hosts:
     - calderadev.ngrok.io
 
-matrix:
-  include:
-  - php: 7.1
+# matrix:
+#  include:
+#  - php: 7.1
 #  - php: 7.2
 #  - php: 7.0
 #  - php: 5.6
@@ -70,7 +70,8 @@ before_install:
 install:
   # install WordPress in the `wordpress` folder
   - cd $WP_FOLDER
-  - wp core download --version=$WP_VERSION
+#  - wp core download --version=$WP_VERSION
+  - wp core download
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
   - wp core install --url="$WP_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
   - wp rewrite structure '/%postname%/' --hard
