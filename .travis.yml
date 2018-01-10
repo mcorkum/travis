@@ -90,12 +90,12 @@ install:
   - wp option update siteurl $NGROK_URL
   - wp rewrite structure '/%postname%/' --hard
 
-
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
 
   # copy the Nginx configuration file to the available sites
   - sudo cp build/travis-nginx-conf /etc/nginx/sites-available/$NGROKDOMAIN
+  - sudo sed -e "s?%WP_FOLDER%?$WP_FOLDER?g" --in-place /etc/nginx/sites-available/$NGROKDOMAIN
   - sudo sed -e "s?%NGROKDOMAIN%?$NGROKDOMAIN?g" --in-place /etc/nginx/sites-available/$NGROKDOMAIN
 
   # enable the site
