@@ -75,19 +75,16 @@ install:
   - ./ngrok http 80 > /dev/null &
   - sleep 10
   - NGROK_URL_RAW=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
-  - echo $NGROK_URL_RAW
   - NGROKDOMAIN="${NGROK_URL_RAW##*/}"
-  - echo $NGROKDOMAIN
   - BASE_URL=http://
   - NGROK_URL=$BASE_URL$NGROKDOMAIN
-  - echo $NGROK_URL
 
   # install WordPress in the `wordpress` folder
   - cd $WP_FOLDER
 #  - wp core download --version=$WP_VERSION
   - wp core download
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
-  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@admin.dev" --skip-email
+  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$NGROK_URL" --skip-email
   - wp core update-db
   - wp option update home $NGROK_URL
   - wp option update siteurl $NGROK_URL
