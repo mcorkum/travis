@@ -16,8 +16,8 @@
       <file leaf-file-name=".travis.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.travis.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="99" column="52" lean-forward="false" selection-start-line="99" selection-start-column="52" selection-end-line="99" selection-end-column="52" />
+            <state relative-caret-position="399">
+              <caret line="84" column="156" lean-forward="false" selection-start-line="84" selection-start-column="156" selection-end-line="84" selection-end-column="156" />
               <folding />
             </state>
           </provider>
@@ -143,12 +143,12 @@
       <workItem from="1515162697437" duration="7916000" />
       <workItem from="1515416664276" duration="13366000" />
       <workItem from="1515597245537" duration="1327000" />
-      <workItem from="1515607328587" duration="1144000" />
+      <workItem from="1515607328587" duration="1283000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23753000" />
+    <option name="totallyTimeSpent" value="23892000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="76" y="94" width="2161" height="953" extended-state="0" />
@@ -295,8 +295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.travis.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="99" column="52" lean-forward="false" selection-start-line="99" selection-start-column="52" selection-end-line="99" selection-end-column="52" />
+        <state relative-caret-position="399">
+          <caret line="84" column="156" lean-forward="false" selection-start-line="84" selection-start-column="156" selection-end-line="84" selection-end-column="156" />
           <folding />
         </state>
       </provider>
