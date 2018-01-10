@@ -78,7 +78,8 @@ install:
   - echo $NGROK_URL_RAW
   - NGROKDOMAIN="${NGROK_URL_RAW##*/}"
   - echo $NGROKDOMAIN
-  - NGROK_URL=http://%NGROKDOMAIN%
+  - BASE_URL=http://
+  - NGROK_URL=$BASE_URL$NGROKDOMAIN
   - echo $NGROK_URL
 
   # install WordPress in the `wordpress` folder
