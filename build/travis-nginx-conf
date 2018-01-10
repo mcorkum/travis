@@ -7,7 +7,7 @@ map $http_host $blogid {
 server {
     listen 80;
 
-    server_name %WP_DOMAIN% *.%WP_DOMAIN%;
+    server_name  *.ngrok.io;
 
     root %WP_FOLDER%;
     index index.php;

@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="84c56d75-5d47-4d40-bc1c-908f2a49b3e2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/travis-nginx-conf" afterPath="$PROJECT_DIR$/build/travis-nginx-conf" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,8 +17,8 @@
       <file leaf-file-name=".travis.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.travis.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="618">
-              <caret line="110" column="30" lean-forward="false" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
+            <state relative-caret-position="900">
+              <caret line="60" column="30" lean-forward="false" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -26,8 +27,8 @@
       <file leaf-file-name="travis-nginx-conf" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build/travis-nginx-conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state relative-caret-position="135">
+              <caret line="9" column="28" lean-forward="false" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -143,12 +144,12 @@
       <workItem from="1515162697437" duration="7916000" />
       <workItem from="1515416664276" duration="13366000" />
       <workItem from="1515597245537" duration="1327000" />
-      <workItem from="1515607328587" duration="453000" />
+      <workItem from="1515607328587" duration="931000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23062000" />
+    <option name="totallyTimeSpent" value="23540000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="76" y="94" width="2161" height="953" extended-state="0" />
@@ -287,16 +288,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build/travis-nginx-conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        <state relative-caret-position="135">
+          <caret line="9" column="28" lean-forward="false" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.travis.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="110" column="30" lean-forward="false" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
+        <state relative-caret-position="900">
+          <caret line="60" column="30" lean-forward="false" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
           <folding />
         </state>
       </provider>

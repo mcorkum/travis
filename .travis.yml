@@ -11,8 +11,6 @@ env:
   global:
     - WP_TRAVISCI=travis:phpunit
     - WP_FOLDER="/tmp/wordpress"
-    - WP_URL="localhost.dev"
-    - WP_DOMAIN="localhost.dev"
     - DB_NAME="wordpress"
     - WP_TABLE_PREFIX="wp_"
     - WP_ADMIN_USERNAME="admin"
@@ -30,8 +28,6 @@ addons:
       - php5-fpm
       - php5-mysql
       - nginx
-  hosts:
-    - localhost.dev
 
 # matrix:
 #  include:
@@ -64,17 +60,10 @@ before_install:
 # prepend the `vendor/bin` folder the PATH
 - export PATH=vendor/bin:$PATH
 
-
 install:
-  # install WordPress in the `wordpress` folder
-  - cd $WP_FOLDER
-#  - wp core download --version=$WP_VERSION
-  - wp core download
-  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
-  - wp core install --url="$WP_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
-
-  # update WordPress database to avoid prompts
-  - wp core update-db
+  # Download json parser for determining ngrok tunnel
+  - wget https://stedolan.github.io/jq/download/linux64/jq
+  - chmod +x jq
 
   # Download ngrok and open tunnel to our application
   - wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
@@ -82,15 +71,19 @@ install:
   - chmod +x ngrok
   - ./ngrok authtoken $NGORK_AUTH
 
-  # Download json parser for determining ngrok tunnel
-  - wget https://stedolan.github.io/jq/download/linux64/jq
-  - chmod +x jq
-
   # Start ngrok and get URL
   - ./ngrok http 80 > /dev/null &
   - sleep 10
   - NGROK_URL=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
   - echo $NGROK_URL
+
+  # install WordPress in the `wordpress` folder
+  - cd $WP_FOLDER
+#  - wp core download --version=$WP_VERSION
+  - wp core download
+  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
+  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
+  - wp core update-db
   - wp option update home $NGROK_URL
   - wp option update siteurl $NGROK_URL
   - wp rewrite structure '/%postname%/' --hard
