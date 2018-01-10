@@ -90,6 +90,7 @@ install:
   - wp option update siteurl $NGROK_URL
   - wp rewrite structure '/%postname%/' --hard
 
+
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
 
