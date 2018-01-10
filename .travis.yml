@@ -75,9 +75,8 @@ install:
   - ./ngrok http 80 > /dev/null &
   - sleep 10
   - NGROK_URL_RAW=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
-  - NGROKDOMAIN="${NGROK_URL##*/}"
+  - NGROKDOMAIN="${NGROK_URL_RAW##*/}"
   - NGROK_URL=http://%NGROKDOMAIN%
-  - echo $NGROK_URL
 
   # install WordPress in the `wordpress` folder
   - cd $WP_FOLDER
@@ -96,7 +95,7 @@ install:
   # copy the Nginx configuration file to the available sites
   - sudo cp build/travis-nginx-conf /etc/nginx/sites-available/$NGROKDOMAIN
   - sudo sed -e "s?%WP_FOLDER%?$WP_FOLDER?g" --in-place /etc/nginx/sites-available/$NGROKDOMAIN
-  - sudo sed -e "s?%WP_DOMAIN%?$WP_DOMAIN?g" --in-place /etc/nginx/sites-available/$NGROKDOMAIN
+  - sudo sed -e "s?%NGROKDOMAIN%?$NGROKDOMAIN?g" --in-place /etc/nginx/sites-available/$NGROKDOMAIN
 
   # enable the site
   - sudo ln -s /etc/nginx/sites-available/$NGROKDOMAIN /etc/nginx/sites-enabled/
