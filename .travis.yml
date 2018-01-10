@@ -76,6 +76,25 @@ install:
   # update WordPress database to avoid prompts
   - wp core update-db
 
+  # Download ngrok and open tunnel to our application
+  - wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+  - unzip ngrok-stable-linux-amd64.zip
+  - chmod +x ngrok
+  - ./ngrok authtoken $NGORK_AUTH
+
+  # Download json parser for determining ngrok tunnel
+  - wget https://stedolan.github.io/jq/download/linux64/jq
+  - chmod +x jq
+
+  # Start ngrok and get URL
+  - ./ngrok http 80 > /dev/null &
+  - sleep 10
+  - NGROK_URL=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
+  - echo $NGROK_URL
+  - wp option update home $NGROK_URL
+  - wp option update siteurl $NGROK_URL
+  - wp rewrite structure '/%postname%/' --hard
+
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
 
@@ -87,27 +106,11 @@ install:
   # enable the site
   - sudo ln -s /etc/nginx/sites-available/$WP_DOMAIN /etc/nginx/sites-enabled/
 
-  # Download ngrok and open tunnel to our application
-  - wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-  - unzip ngrok-stable-linux-amd64.zip
-  - chmod +x ngrok
-  - ./ngrok authtoken $NGORK_AUTH
-
-  # Download json parser for determining ngrok tunnel
-  - wget https://stedolan.github.io/jq/download/linux64/jq
-  - chmod +x jq
+  # restart nginx
+  - sudo service php5-fpm restart
+  - sudo service nginx restart
 
 before_script:
-- sudo service php5-fpm restart
-- sudo service nginx restart
-- ./ngrok http 80 > /dev/null &
-- sleep 10
-- NGROK_URL=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
-- echo $NGROK_URL
-- wp option update home $NGROK_URL
-- wp option update siteurl $NGROK_URL
-- wp rewrite structure '/%postname%/' --hard
-
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
