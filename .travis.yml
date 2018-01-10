@@ -72,9 +72,6 @@ install:
   - wp core download
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
   - wp core install --url="$WP_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
-  - wp option update home '/'
-  - wp option update siteurl '/'
-  - wp rewrite structure '/%postname%/' --hard
 
   # update WordPress database to avoid prompts
   - wp core update-db
@@ -106,9 +103,11 @@ before_script:
 - ./ngrok http 80 > /dev/null &
 - sleep 10
 - NGROK_URL=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
-- NGROK_URL2=$(curl -s localhost:4040/api/tunnels/command_line | $PWD/jq -r '.tunnels[1].public_url')
 - echo $NGROK_URL
-- echo $NGROK_URL2
+- wp option update home $NGROK_URL
+- wp option update siteurl $NGROK_URL
+- wp rewrite structure '/%postname%/' --hard
+
 - sleep 500
 - |
   # Remove Xdebug for a huge performance increase:
