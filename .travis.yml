@@ -72,7 +72,7 @@ install:
   - ./ngrok authtoken $NGORK_AUTH
 
   # Start ngrok and get URL
-  - ./ngrok http 80 > /dev/null &
+  - ./ngrok -bind-tls=false http 80 > /dev/null &
   - sleep 10
   - NGROK_URL=$(curl -s localhost:4040/api/tunnels/command_line | jq --raw-output .public_url)
   - NGROKDOMAIN="${NGROK_URL##*/}"
