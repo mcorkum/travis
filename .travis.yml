@@ -82,7 +82,7 @@ install:
 #  - wp core download --version=$WP_VERSION
   - wp core download
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
-  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$WP_DOMAIN" --skip-email
+  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$NGROK_URL" --skip-email
   - wp core update-db
   - wp option update home $NGROK_URL
   - wp option update siteurl $NGROK_URL
@@ -92,12 +92,12 @@ install:
   - cd $TRAVIS_BUILD_DIR
 
   # copy the Nginx configuration file to the available sites
-  - sudo cp build/travis-nginx-conf /etc/nginx/sites-available/$WP_DOMAIN
-  - sudo sed -e "s?%WP_FOLDER%?$WP_FOLDER?g" --in-place /etc/nginx/sites-available/$WP_DOMAIN
-  - sudo sed -e "s?%WP_DOMAIN%?$WP_DOMAIN?g" --in-place /etc/nginx/sites-available/$WP_DOMAIN
+  - sudo cp build/travis-nginx-conf /etc/nginx/sites-available/$NGROK_URL
+  - sudo sed -e "s?%WP_FOLDER%?$WP_FOLDER?g" --in-place /etc/nginx/sites-available/$NGROK_URL
+  - sudo sed -e "s?%WP_DOMAIN%?$WP_DOMAIN?g" --in-place /etc/nginx/sites-available/$NGROK_URL
 
   # enable the site
-  - sudo ln -s /etc/nginx/sites-available/$WP_DOMAIN /etc/nginx/sites-enabled/
+  - sudo ln -s /etc/nginx/sites-available/$NGROK_URL /etc/nginx/sites-enabled/
 
   # restart nginx
   - sudo service php5-fpm restart
