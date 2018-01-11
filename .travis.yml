@@ -16,6 +16,7 @@ env:
     - WP_ADMIN_USERNAME="admin"
     - WP_ADMIN_PASSWORD="admin"
     - NGORK_AUTH="d8NfARcu2wLE1hyeQd9J_6m4RuZQCCoKXJ3etDGnMv"
+    - GHOST_API="1a5c4ab1f9a65c6aac5d449136ff1bcd4b25ebdd"
 #  matrix:
 #    - WP_VERSION=latest
 #    - WP_VERSION=nightly
@@ -83,7 +84,7 @@ install:
   - cd $WP_FOLDER
 #  - wp core download --version=$WP_VERSION
   - wp core download
-  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX" --extra-php="define( 'WP_DEBUG_LOG', true ); define( 'WP_DEBUG_LOG', true );"
+  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX" --extra-php="define( 'CGRKEY', $GHOST_API ); define( 'CGRGDID', 'The address of the Google Sheet With Your Tests' ); define( 'CGRLOCALAPIKEY', 'LongAlphanumericString' );"
   - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$NGROKDOMAIN" --skip-email
   - wp core update-db
   - wp option update home $NGROK_URL
@@ -94,8 +95,9 @@ install:
   - cat /tmp/wordpress/wp-config.php
 
   #plugins
-  - git clone https://github.com/CalderaWP/Caldera-Forms.git tmp/wordpress/plugins/caldera-forms
-  - git clone https://github.com/CalderaWP/caldera-ghost-runner.git tmp/wordpress/plugins/caldera-ghost-runner
+  - git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
+  - git clone https://github.com/CalderaWP/caldera-ghost-runner.git $WP_FOLDER/wp-content/plugins/caldera-ghost-runner
+  - cd tmp/wordpress/plugins/caldera-ghost-runner && composer install
 
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
