@@ -83,9 +83,8 @@ install:
   - cd $WP_FOLDER
 #  - wp core download --version=$WP_VERSION
   - wp core download
-  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX"
+  - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX" --extra-php="define('WP_DEBUG',true);\n"
   - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$NGROKDOMAIN" --skip-email
-  - wp core config --extra-php="define('WP_DEBUG',true);\n"
   - wp core update-db
   - wp option update home $NGROK_URL
   - wp option update siteurl $NGROK_URL
