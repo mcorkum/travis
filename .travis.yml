@@ -48,6 +48,7 @@ addons:
 
 
 before_install:
+- travis token
 # create the databases that will be used in the tests
 - mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
 # set up folders
