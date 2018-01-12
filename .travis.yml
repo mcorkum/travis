@@ -48,7 +48,6 @@ addons:
 
 
 before_install:
-- travis token
 # create the databases that will be used in the tests
 - mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
 # set up folders
@@ -179,3 +178,16 @@ script: echo hello
 #    on_failure: always
 #    on_success: change
 #    on_pull_requests: false
+
+
+2koHbOSoBlMtZDaPLXFGHg
+328105548
+
+curl -s -X POST \
+   -H "Content-Type: application/json" \
+   -H "Accept: application/json" \
+   -H "Travis-API-Version: 3" \
+   -H "Authorization: token 2koHbOSoBlMtZDaPLXFGHg" \
+   -d '{ "quiet": true }' \
+   https://api.travis-ci.org/job/328105548/debug
+
