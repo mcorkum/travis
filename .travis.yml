@@ -180,14 +180,14 @@ script: echo hello
 #    on_pull_requests: false
 
 
-2koHbOSoBlMtZDaPLXFGHg
-328105548
-
-curl -s -X POST \
-   -H "Content-Type: application/json" \
-   -H "Accept: application/json" \
-   -H "Travis-API-Version: 3" \
-   -H "Authorization: token 2koHbOSoBlMtZDaPLXFGHg" \
-   -d '{ "quiet": true }' \
-   https://api.travis-ci.org/job/328105548/debug
+#2koHbOSoBlMtZDaPLXFGHg
+#328105548
+#
+#curl -s -X POST \
+#   -H "Content-Type: application/json" \
+#   -H "Accept: application/json" \
+#   -H "Travis-API-Version: 3" \
+#   -H "Authorization: token 2koHbOSoBlMtZDaPLXFGHg" \
+#   -d '{ "quiet": true }' \
+#   https://api.travis-ci.org/job/328105548/debug
 
