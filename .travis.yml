@@ -118,7 +118,7 @@ install:
   - sudo service nginx restart
 
 before_script:
-- sleep 500
+- sleep 1800
 - |
   # Remove Xdebug for a huge performance increase:
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
