@@ -110,17 +110,27 @@ install:
   # Setup ghost runner
   - cd $WP_FOLDER/wp-content/plugins/caldera-ghost-runner && composer clear-cache && composer install && composer update
 
-  # Setup connected forms ih PHP is right
+  # Setup connected forms
+  - cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
+
+  # Setup cf-result-diff if php7
   - |
     # Install if php7
-    if [ $TRAVIS_PHP_VERSION = 7 ]; then
-      cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
-    else
-      echo "5.5"
-    fi
-
-  # Setup cf-result-diff
-  - cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
+    case "$TRAVIS_PHP_VERSION" in
+      7.2|7.1|7.0|nightly)
+        cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
+        ;;
+      5.6|5.5|5.4|5.3)
+        echo "Nope"
+        ;;
+      5.2)
+        echo "Nope"
+        ;;
+      *)
+        echo "Nope"
+        exit 1
+        ;;
+    esac
 
   # Activate all that stuff and import forms
   - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp plugin activate cf-connected-forms && wp plugin activate cf-result-diff-plugin && wp cgr import
