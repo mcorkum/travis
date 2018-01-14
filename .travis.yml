@@ -91,23 +91,27 @@ install:
   - wp option update siteurl $NGROK_URL
   - wp rewrite structure '/%postname%/' --hard
 
-  # Show WP config
-  - cat /tmp/wordpress/wp-config.php
+  # Clone the ghost runner plugin in WP directory
+  - cd $WP_FOLDER && git clone https://gitlab.com/caldera-labs/ghostrunner-runner-runner.git && cd ghostrunner-runner-runner && npm install
+  - cd $WP_FOLDER/ghostrunner-runner-runner && touch .env && echo "APIKEY=$GHOST_API" >> .env && echo "ROOTURL=$NGROK_URL" >> .env && cat .env
 
-  #plugins
+  # Git clone plugins
   - git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
   - git clone https://github.com/CalderaWP/caldera-ghost-runner.git $WP_FOLDER/wp-content/plugins/caldera-ghost-runner
-  - cd $WP_FOLDER/wp-content/plugins/caldera-ghost-runner
-  - pwd
-  - composer clear-cache && composer install && composer update
-  - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp cgr import
   - git clone https://github.com/calderawp/cf-connected-forms $WP_FOLDER/wp-content/plugins/cf-connected-forms
-  - cd $WP_FOLDER/wp-content/plugins/cf-connected-forms
-  - cd $WP_FOLDER && wp plugin activate cf-connected-forms
+  - git clone https://gitlab.com/caldera-labs/cf-result-diff-plugin.git $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin
+
+  # Setup ghost runner
+  - cd $WP_FOLDER/wp-content/plugins/caldera-ghost-runner && composer clear-cache && composer install && composer update
+
+  # Setup connected forms
   - cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && && composer update && npm install && gulp
-  - cd $WP_FOLDER && git clone https://gitlab.com/caldera-labs/cf-result-diff-plugin.git $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin
+
+  # Setup cf-result-diff
   - cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
-  - cd $WP_FOLDER && wp plugin activateƒ cf-result-diff-plugin
+
+  # Activate all that stuff and import forms
+  - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp cgr import && wp plugin activate cf-connected-forms  && wp plugin activate cf-result-diff-plugin
 
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
