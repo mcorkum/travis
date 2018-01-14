@@ -96,6 +96,7 @@ install:
   - cd $WP_FOLDER/ghostrunner-runner-runner && touch .env && echo "APIKEY=$GHOST_API" >> .env && echo "ROOTURL=$NGROK_URL" >> .env && cat .env
 
   # Git clone plugins
+  - cd $WP_FOLDER
   - git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
   - git clone https://github.com/CalderaWP/caldera-ghost-runner.git $WP_FOLDER/wp-content/plugins/caldera-ghost-runner
   - git clone https://github.com/calderawp/cf-connected-forms $WP_FOLDER/wp-content/plugins/cf-connected-forms
@@ -111,7 +112,7 @@ install:
   - cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
 
   # Activate all that stuff and import forms
-  - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp cgr import && wp plugin activate cf-connected-forms  && wp plugin activate cf-result-diff-plugin
+  - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp plugin activate cf-connected-forms && wp plugin activate cf-result-diff-plugin && wp cgr import
 
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
