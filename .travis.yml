@@ -62,6 +62,9 @@ before_install:
 - export PATH=vendor/bin:$PATH
 
 install:
+  # Install Gulp CLI
+  - npm install --global gulp-cli
+
   # Download json parser for determining ngrok tunnel
   - wget https://stedolan.github.io/jq/download/linux64/jq
   - chmod +x jq
