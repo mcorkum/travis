@@ -50,13 +50,6 @@ addons:
 before_install:
 - echo $(phpenv version-name)
 - echo "$TRAVIS_PHP_VERSION"
-- |
-  # Remove Xdebug for a huge performance increase:
-  if [ $TRAVIS_PHP_VERSION != 5.5 ]; then
-    echo "Other"
-  else
-    echo "5.5"
-  fi
 # create the databases that will be used in the tests
 - mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
 # set up folders
@@ -119,11 +112,11 @@ install:
 
   # Setup connected forms ih PHP is right
   - |
-    # Remove Xdebug for a huge performance increase:
-    if [ $TRAVIS_PHP_VERSION = "7" ]; then
+    # Install if php7
+    if [ $TRAVIS_PHP_VERSION = 7 ]; then
       cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
     else
-      echo "Shit PHP version";
+      echo "5.5"
     fi
 
   # Setup cf-result-diff
