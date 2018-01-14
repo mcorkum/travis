@@ -165,14 +165,12 @@ install:
   # enable the site
   - sudo ln -s /etc/nginx/sites-available/$NGROKDOMAIN /etc/nginx/sites-enabled/
 
-
-
-
   # restart nginx
   - sudo service php5-fpm restart
   - sudo service nginx restart
 
 before_script:
+- cd $WP_FOLDER/ghostrunner-runner-runner && npm run run
 - sleep 1800
 - |
   # Remove Xdebug for a huge performance increase:
