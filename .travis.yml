@@ -133,7 +133,26 @@ install:
     esac
 
   # Activate all that stuff and import forms
-  - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp plugin activate cf-connected-forms && wp plugin activate cf-result-diff-plugin && wp cgr import
+  - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp plugin activate cf-connected-forms && wp cgr import
+
+ # Activate cf-result-diff if php7
+  - |
+    # Install if php7
+    case "$TRAVIS_PHP_VERSION" in
+      7.2|7.1|7.0|nightly)
+        cd $WP_FOLDER && wp plugin activate cf-result-diff-plugin
+        ;;
+      5.6|5.5|5.4|5.3)
+        echo "Nope"
+        ;;
+      5.2)
+        echo "Nope"
+        ;;
+      *)
+        echo "Nope"
+        exit 1
+        ;;
+    esac
 
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
