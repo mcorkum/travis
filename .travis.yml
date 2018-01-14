@@ -110,7 +110,7 @@ install:
 
   # Setup connected forms ih PHP is right
   - |
-    if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then
+    if [[ ${TRAVIS_PHP_VERSION:0:3} > "7" ]]; then
       cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
     fi
 
