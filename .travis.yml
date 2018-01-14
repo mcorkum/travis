@@ -50,6 +50,13 @@ addons:
 before_install:
 - echo $(phpenv version-name)
 - echo "$TRAVIS_PHP_VERSION"
+- |
+  # Remove Xdebug for a huge performance increase:
+  if [ $TRAVIS_PHP_VERSION != 5.5 ]; then
+    echo "Other"
+  else
+    echo "5.5"
+  fi
 # create the databases that will be used in the tests
 - mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
 # set up folders
