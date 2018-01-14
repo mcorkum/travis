@@ -101,6 +101,12 @@ install:
   - pwd
   - composer clear-cache && composer install && composer update
   - cd $WP_FOLDER && wp plugin activate caldera-forms && wp plugin activate caldera-ghost-runner && wp cgr import
+  - git clone https://github.com/calderawp/cf-connected-forms $WP_FOLDER/wp-content/plugins/cf-connected-forms
+  - cd $WP_FOLDER/wp-content/plugins/cf-connected-forms
+  - cd $WP_FOLDER && wp plugin activate cf-connected-forms && composer install && npm install && gulp
+  - cd $WP_FOLDER && git clone https://gitlab.com/caldera-labs/cf-result-diff-plugin.git $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin
+  - cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
+  - cd $WP_FOLDER && wp plugin activateƒ cf-result-diff-plugin
 
   # get back to the build folder
   - cd $TRAVIS_BUILD_DIR
