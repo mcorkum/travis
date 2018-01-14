@@ -109,7 +109,13 @@ install:
   - cd $WP_FOLDER/wp-content/plugins/caldera-ghost-runner && composer clear-cache && composer install && composer update
 
   # Setup connected forms ih PHP is right
-  - if [ $(phpenv version-name) = "7.0" ]; then cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp; fi
+  - |
+    # Remove Xdebug for a huge performance increase:
+    if [ $TRAVIS_PHP_VERSION = "7" ]; then
+      cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
+    else
+      echo "Shit PHP version";
+    fi
 
   # Setup cf-result-diff
   - cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
@@ -127,6 +133,9 @@ install:
 
   # enable the site
   - sudo ln -s /etc/nginx/sites-available/$NGROKDOMAIN /etc/nginx/sites-enabled/
+
+
+
 
   # restart nginx
   - sudo service php5-fpm restart
