@@ -108,8 +108,11 @@ install:
   # Setup ghost runner
   - cd $WP_FOLDER/wp-content/plugins/caldera-ghost-runner && composer clear-cache && composer install && composer update
 
-  # Setup connected forms
-  - cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
+  # Setup connected forms ih PHP is right
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then
+      cd $WP_FOLDER/wp-content/plugins/cf-connected-forms && composer install && composer update && npm install && gulp
+    fi
 
   # Setup cf-result-diff
   - cd $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin && composer install && composer update
