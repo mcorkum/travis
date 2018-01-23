@@ -105,7 +105,7 @@ install:
 
   # Git clone plugins
   - cd $WP_FOLDER
-  - git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
+  # git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
   - git clone https://github.com/CalderaWP/caldera-ghost-runner.git $WP_FOLDER/wp-content/plugins/caldera-ghost-runner
   - git clone https://github.com/calderawp/cf-connected-forms $WP_FOLDER/wp-content/plugins/cf-connected-forms
   - git clone https://gitlab.com/caldera-labs/cf-result-diff-plugin.git $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin
