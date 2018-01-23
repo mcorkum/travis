@@ -100,6 +100,9 @@ install:
   - cd $WP_FOLDER && git clone https://gitlab.com/caldera-labs/ghostrunner-runner-runner.git && cd ghostrunner-runner-runner && npm install
   - cd $WP_FOLDER/ghostrunner-runner-runner && touch .env && echo "APIKEY=$GHOST_API" >> .env && echo "ROOTURL=$NGROK_URL" >> .env && cat .env
 
+  # Copy Caldera to proper place
+  - cp -a /$TRAVIS_BUILD_DIR/. /$WP_FOLDER/wp-content/plugins/caldera-forms
+
   # Git clone plugins
   - cd $WP_FOLDER
   - git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
@@ -170,7 +173,7 @@ install:
   - sudo service nginx restart
 
 before_script:
-- cd $WP_FOLDER/ghostrunner-runner-runner && npm run run
+# - cd $WP_FOLDER/ghostrunner-runner-runner && npm run run
 - sleep 1800
 - |
   # Remove Xdebug for a huge performance increase:
@@ -221,7 +224,8 @@ before_script:
 - git --version
 - locale -a
 
-script: echo hello
+script:
+- curl https://api.ghostinspector.com/v1/suites/59d8091baea70072f47c435b/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
 
 #notifications:
 #  slack:
