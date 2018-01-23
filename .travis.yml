@@ -1,12 +1,14 @@
 sudo: false
 dist: trusty
 language: php
+
 cache:
   apt: true
   directories:
-    - node_modules
-    - vendor
+    - $HOME/*/node_modules
+    - $HOME/.npm
     - $HOME/.composer/cache
+
 env:
   global:
     - WP_TRAVISCI=travis:phpunit
@@ -20,6 +22,10 @@ env:
 #  matrix:
 #    - WP_VERSION=latest
 #    - WP_VERSION=nightly
+
+branches:
+  only:
+  - master
 
 addons:
   apt:
@@ -101,11 +107,11 @@ install:
   - cd $WP_FOLDER/ghostrunner-runner-runner && touch .env && echo "APIKEY=$GHOST_API" >> .env && echo "ROOTURL=$NGROK_URL" >> .env && cat .env
 
   # Copy Caldera to proper place
-  - cp -a $TRAVIS_BUILD_DIR/. $WP_FOLDER/wp-content/plugins/caldera-forms
+  # - cp -a $TRAVIS_BUILD_DIR/. $WP_FOLDER/wp-content/plugins/caldera-forms
 
   # Git clone plugins
   - cd $WP_FOLDER
-  # git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
+  - git clone https://github.com/CalderaWP/Caldera-Forms.git $WP_FOLDER/wp-content/plugins/caldera-forms
   - git clone https://github.com/CalderaWP/caldera-ghost-runner.git $WP_FOLDER/wp-content/plugins/caldera-ghost-runner
   - git clone https://github.com/calderawp/cf-connected-forms $WP_FOLDER/wp-content/plugins/cf-connected-forms
   - git clone https://gitlab.com/caldera-labs/cf-result-diff-plugin.git $WP_FOLDER/wp-content/plugins/cf-result-diff-plugin
@@ -174,7 +180,27 @@ install:
 
 before_script:
 # - cd $WP_FOLDER/ghostrunner-runner-runner && npm run run
-- sleep 1800
+# - sleep 1800
+#CF Field: Calculations '59d8091baea70072f47c435b',
+- curl https://api.ghostinspector.com/v1/suites/59d8091baea70072f47c435b/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Feature: Conditionals '59f538ec2c825860a04320bc'
+- curl https://api.ghostinspector.com/v1/suites/59f538ec2c825860a04320bc/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Field: HTML Summary'59f3c05d8ba4c50f26eac7c6'
+- curl https://api.ghostinspector.com/v1/suites/59f3c05d8ba4c50f26eac7c6/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Field: Adv File'5a304bebbd6de962642a9d52'
+- curl https://api.ghostinspector.com/v1/suites/5a304bebbd6de962642a9d52/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Field: Credit Card'5a316b8cbd6de962642abe04'
+- curl https://api.ghostinspector.com/v1/suites/5a316b8cbd6de962642abe04/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Feature: Modals'5a0c958dd5628e428b35840a'
+- curl https://api.ghostinspector.com/v1/suites/5a0c958dd5628e428b35840a/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+#CF Feature: Edit Tokens'5a3abf00f2d3831d30cf5206'
+- curl https://api.ghostinspector.com/v1/suites/5a3abf00f2d3831d30cf5206/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Field: Select '5a317e9fb96eed0c0d60ca9e'
+- curl https://api.ghostinspector.com/v1/suites/5a317e9fb96eed0c0d60ca9e/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Feature: Modals '5a0c973b8ee17043538674e5'
+- curl https://api.ghostinspector.com/v1/suites/5a0c973b8ee17043538674e5/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
+# CF Other '5a398024bd6de962642b72b7'
+- curl https://api.ghostinspector.com/v1/suites/5a398024bd6de962642b72b7/execute/?apiKey=$GHOST_API&startUrl=$NGROK_URL
 - |
   # Remove Xdebug for a huge performance increase:
   if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
