@@ -101,7 +101,7 @@ install:
   - cd $WP_FOLDER/ghostrunner-runner-runner && touch .env && echo "APIKEY=$GHOST_API" >> .env && echo "ROOTURL=$NGROK_URL" >> .env && cat .env
 
   # Copy Caldera to proper place
-  - cp -a /$TRAVIS_BUILD_DIR/. /$WP_FOLDER/wp-content/plugins/caldera-forms
+  - cp -a $TRAVIS_BUILD_DIR/. $WP_FOLDER/wp-content/plugins/caldera-forms
 
   # Git clone plugins
   - cd $WP_FOLDER
