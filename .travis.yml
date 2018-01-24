@@ -1,33 +1,34 @@
 sudo: false
 dist: trusty
+
 language: php
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
 
 branches:
   only:
   - master
 
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
 env:
   global:
     - WP_TRAVISCI=travis:phpunit
-    - WP_FOLDER="/tmp/wordpress"
+    - WP_FOLDER="/ngrok/wordpress"
     - DB_NAME="wordpress"
     - WP_TABLE_PREFIX="wp_"
-    - WP_ADMIN_USERNAME="admin"
-    - WP_ADMIN_PASSWORD="admin"
     - WP_CLI_FOLDER="tools"
     - NGORK_AUTH="d8NfARcu2wLE1hyeQd9J_6m4RuZQCCoKXJ3etDGnMv"
     - CGRKEY="1a5c4ab1f9a65c6aac5d449136ff1bcd4b25ebdd"
 
   matrix:
     - WP_VERSION=latest
-
-
-cache:
-  apt: true
-  directories:
-    - $HOME/*/node_modules
-    - $HOME/.npm
-    - $HOME/.composer/cache
 
 addons:
   apt:
@@ -87,14 +88,14 @@ install:
   - cd $WP_FOLDER
   - wp core download --version=$WP_VERSION
   - wp config create --dbname="$DB_NAME" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="$WP_TABLE_PREFIX" --extra-php="define( 'CGRKEY', '1a5c4ab1f9a65c6aac5d449136ff1bcd4b25ebdd' ); define( 'CGRGDID', '1b2bIuIb8fKZ4NoC7UHV4hoEmw8W0Levkw2h_tJwDryM' ); define( 'CGRLOCALAPIKEY', 'oC7Ub8fw8W0KZ4NoCHV4ho1Emw8W0' );"
-  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="$WP_ADMIN_USERNAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="admin@$NGROKDOMAIN" --skip-email
+  - wp core install --url="$NGROK_URL" --title="Test" --admin_user="admin" --admin_password="admin" --admin_email="admin@$NGROKDOMAIN" --skip-email
   - wp core update-db
   - wp option update home $NGROK_URL
   - wp option update siteurl $NGROK_URL
   - wp rewrite structure '/%postname%/' --hard
 
   # Copy Caldera to NGROK accessible site
-  # - cp -a $TRAVIS_BUILD_DIR/. $WP_FOLDER/wp-content/plugins/caldera-forms
+  # - rsync -av $TRAVIS_BUILD_DIR $WP_FOLDER/wp-content/plugins/caldera-forms --exclude="/tmp" --exclude='$WP_FOLDER' --exclude='/bin' --exclude='/tools
 
   # Git clone plugins
   - cd $WP_FOLDER
@@ -175,6 +176,19 @@ before_script:
       esac
     fi
 
+  # Setup unit tests
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash bin/install-wp-tests.sh wordpress_unit_test root '' localhost $WP_VERSION
+    fi
+
+  # Setup phpcs if the env var is set
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      composer global require wp-coding-standards/wpcs
+      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+    fi
+
   # Echo key version numbers
   - npm --version
   - node --version
@@ -191,6 +205,16 @@ before_script:
   - locale -a
 
 script:
-# Run ghost inspector tests
-- sleep 1800
-#- cd $WP_FOLDER && wp cgr run
+  # Run unit tests / phpcs
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      phpunit
+      WP_MULTISITE=1 phpunit
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      phpcs
+    fi
+  - sleep 1800
+  # Run ghost inspector tests
+  #- cd $WP_FOLDER && wp cgr run
