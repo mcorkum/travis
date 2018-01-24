@@ -20,7 +20,7 @@ cache:
 env:
   global:
     - WP_TRAVISCI=travis:phpunit
-    - WP_FOLDER="/external/wordpress"
+    - WP_FOLDER="/tmp/external-wordpress"
     - DB_NAME="wordpress"
     - WP_TABLE_PREFIX="wp_"
     - WP_CLI_FOLDER="tools"
@@ -51,7 +51,7 @@ before_install:
   - mysql -e "create database IF NOT EXISTS $DB_NAME;" -uroot
 
   # Set up folders
-  - mkdir -p $WP_FOLDER &&  mkdir tools
+  - mkdir -p $WP_FOLDER && mkdir tools
 
   # Install WP-CLI
   - wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P $(pwd)/$WP_CLI_FOLDER/ && chmod +x $WP_CLI_FOLDER/wp-cli.phar && mv $WP_CLI_FOLDER/wp-cli.phar $WP_CLI_FOLDER/wp
